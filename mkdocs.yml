@@ -81,6 +81,8 @@ nav:
     - Report Issues: https://github.com/Tandoh004/geopak/issues
     - Examples:
         - examples/intro.ipynb
+        - examples/sample.ipynb
+
     - API Reference:
           - geopak module: geopak.md
           - common module: common.md
