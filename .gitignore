@@ -6,6 +6,7 @@ private/
 *.json
 *vector.ipnb
 *.tif
+*.csv
 # C extensions
 *.so
 
