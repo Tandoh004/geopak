@@ -82,7 +82,10 @@ nav:
     - Examples:
         - examples/intro.ipynb
         - examples/sample.ipynb
+        - examples/csv.ipynb
+
 
     - API Reference:
           - geopak module: geopak.md
           - common module: common.md
+          - utils module: utils.md
