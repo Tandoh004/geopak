@@ -34,6 +34,7 @@ class Map(ipyleaflet.Map):
         layer = ipyleaflet.TileLayer(url=url, name=name, **kwargs)
         self.add(layer)
 
+
     def add_basemap(self, name):
         """
         Add a basemap to the map.
@@ -52,8 +53,8 @@ class Map(ipyleaflet.Map):
     def add_geojson(self, data, name="geojson", **kwargs):
         """
         Args:
-            data (_type_): _description_
-            name (str, optional): _description_. Defaults to "geojson".
+            data (_type_): Path to the geojson data (including .geojson extension)
+            name (str, optional): Name for the added Geojson data. Defaults to "geojson".
         """              
         import json
 
@@ -75,7 +76,7 @@ class Map(ipyleaflet.Map):
         """
         Args:
                 data (str): Path to the shapefile (including .shp extension).
-                name (str, optional): Name for the added GeoJSON data. Defaults to "shp".
+                name (str, optional): Name for the added Shapefile data. Defaults to "shp".
                 **kwargs: Additional keyword arguments passed to the `add_geojson` method.
        """
         import shapefile
@@ -88,7 +89,44 @@ class Map(ipyleaflet.Map):
                 
         self.add_geojson(data, name, **kwargs )
 
+
+    def add_raster(self, data, name="raster", zoom_to_layer=True, **kwargs):
+        """Add a raster to the current map.
+
+        Args:
+            data (str or dict): Path to the raster as a string or a dictionary representation (including .Tif extension)
+            name (str, optional): Name for the added Raster data. Defaults to "raster".
+            zoom_to_layer (bool, optional): Whether to zoom to the added layer. Defaults to True.
+            **kwargs: Additional keyword arguments to pass to the underlying functions.
+        """
+
+        try:
+            from localtileserver import TileClient, get_leaflet_tile_layer
+        except ImportError:
+            raise ImportError("Please install the localtileserver package")
+
+        client = TileClient(data)
+
+        layer = get_leaflet_tile_layer(client, name=name, **kwargs)
+        self.add(layer)
+
+        if zoom_to_layer:
+            self.center = client.center()
+            self.zoom = client.default_zoom
     
+
+
+    def add_image(self, url, bounds, name="image", **kwargs):
+        """adds an image overlay to the map.
+
+        Args:
+            url (str): the url of the image
+            bounds (list): the bounds of the image
+            name (str, optional): the name of the layer. Defaults to "image".
+        """
+        
+        layer = ipyleaflet.ImageOverlay(url=url, bounds=bounds, name="image", **kwargs)
+        self.add(layer)
 
     
        
