@@ -306,7 +306,7 @@ class Map(ipyleaflet.Map):
         
 
     def add_latlon (self, position="bottomleft"):
-        """Add cordinates to the map on a click
+        """Add coordinates to the map on a click
 
         Args:
             position (str, optional): Position of the cordinates. Defaults to "bottomleft".
