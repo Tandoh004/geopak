@@ -229,7 +229,7 @@ class Map(ipyleaflet.Map):
 
 
     def add_widget(self, basemaps=None, position='topright'):
-                """_add widgets with basemaps , zoom slider  and color picker to map
+                """_add widgets with basemaps , zoom slider to map
 
                 Args:
                     basemaps (_type_, optional): _description_. Defaults to None.
@@ -284,18 +284,33 @@ class Map(ipyleaflet.Map):
      
 
     def opacity_slider(self, layer_index=0, description='Opacity'):
-            layer = self.layers[layer_index]
-            opacity_slider = widgets.FloatSlider(description=description, min=0, max=1, value=layer.opacity)
-            opacity_slider.layout.width = "250px"
+        """_Add opacity slider to the map
 
-            def update_opacity(change):
-                 layer.opacity = change['new']
+        Args:
+            layer_index (int, optional): _description_. Defaults to 0.
+            description (str, optional): _description_. Defaults to 'Opacity'.
+
+        Returns:
+            _type_: _description_
+        """        
+        layer = self.layers[layer_index]
+        opacity_slider = widgets.FloatSlider(description=description, min=0, max=1, value=layer.opacity)
+        opacity_slider.layout.width = "250px"
+
+        def update_opacity(change):
+            layer.opacity = change['new']
 
             opacity_slider.observe(update_opacity, 'value')
 
             return opacity_slider
+        
 
     def add_latlon (self, position="bottomleft"):
+        """Add cordinates to the map on a click
+
+        Args:
+            position (str, optional): Position of the cordinates. Defaults to "bottomleft".
+        """
 
         output_widget = widgets.Output(layout={"border": "0.5px solid black"})
         output_control = WidgetControl(widget=output_widget, position=position)
