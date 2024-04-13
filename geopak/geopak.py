@@ -309,7 +309,7 @@ class Map(ipyleaflet.Map):
         """Add coordinates to the map on a click
 
         Args:
-            position (str, optional): Position of the cordinates. Defaults to "bottomleft".
+            position (str, optional): Position of the coordinates. Defaults to "bottomleft".
         """
 
         output_widget = widgets.Output(layout={"border": "0.5px solid black"})
