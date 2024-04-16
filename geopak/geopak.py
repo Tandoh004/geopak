@@ -26,7 +26,7 @@ class Map(ipyleaflet.Map):
          
         self.toolbar = self.add_toolbar()
         self.cord = self.add_latlon()
-
+        
                  
     def add_tile_layer(self, url, name, **kwargs):
         """
@@ -254,7 +254,7 @@ class Map(ipyleaflet.Map):
 
                 basemap_selector.observe(update_basemap, 'value')
 
-                btn = widgets.Button(icon="map", button_style="primary")
+                btn = widgets.Button(icon='map', button_style='primary')
                 btn.layout.width = "28px"
 
                 box = widgets.HBox([basemap_selector, btn])
@@ -262,9 +262,8 @@ class Map(ipyleaflet.Map):
                 zoom_slider = widgets.IntSlider(description='Zoom level:', min=0, max=15, value=2)
                 widgets.jslink((zoom_slider, 'value'), (self, 'zoom'))
 
-                opacity_slider_widget = self.opacity_slider()
-
-                item = [zoom_slider, opacity_slider_widget]
+                item = [zoom_slider]
+              
                 vbox = widgets.VBox(item)
 
 
@@ -277,32 +276,38 @@ class Map(ipyleaflet.Map):
 
                 # Set button click behavior
                 btn.on_click(on_button_click)
+                
+
 
                 control = WidgetControl(widget=widgets.VBox([box, vbox]), position=position)
                 self.add_control(control)
     
      
 
-    def opacity_slider(self, layer_index=0, description='Opacity'):
-        """_Add opacity slider to the map
+    def add_opacity_slider(self, layer_index=0, description="Opacity", position="bottomright"):
+        """Adds an opacity slider to the map.
 
         Args:
-            layer_index (int, optional): _description_. Defaults to 0.
-            description (str, optional): _description_. Defaults to 'Opacity'.
-
-        Returns:
-            _type_: _description_
-        """        
+            layer (object): The layer to which the opacity slider is added.
+            description (str, optional): The description of the opacity slider. Defaults to "Opacity".
+            position (str, optional): The position of the opacity slider. Defaults to "topright".
+        """
         layer = self.layers[layer_index]
-        opacity_slider = widgets.FloatSlider(description=description, min=0, max=1, value=layer.opacity)
-        opacity_slider.layout.width = "250px"
+        opacity_slider = widgets.FloatSlider(
+            description=description,
+            min=0,
+            max=1,
+            value=layer.opacity,
+            style={"description_width": "initial"},
+        )
 
         def update_opacity(change):
-            layer.opacity = change['new']
+            layer.opacity = change["new"]
 
-            opacity_slider.observe(update_opacity, 'value')
+        opacity_slider.observe(update_opacity, "value")
 
-            return opacity_slider
+        control = ipyleaflet.WidgetControl(widget=opacity_slider, position=position)
+        self.add(control)
         
 
     def add_latlon (self, position="bottomleft"):
@@ -312,8 +317,8 @@ class Map(ipyleaflet.Map):
             position (str, optional): Position of the coordinates. Defaults to "bottomleft".
         """
 
-        output_widget = widgets.Output(layout={"border": "0.5px solid black"})
-        output_control = WidgetControl(widget=output_widget, position=position)
+        cord_output = widgets.Output(layout={"border": "0.5px solid black"})
+        output_control = WidgetControl(widget=cord_output, position=position)
         self.add_control(output_control)
        
 
@@ -322,8 +327,8 @@ class Map(ipyleaflet.Map):
             latlon = [round(x, 5) for x in latlon]
 
             if kwargs.get("type") == "click":
-                with output_widget:
-                    output_widget.clear_output()
+                with cord_output:
+                    cord_output.clear_output()
                     print("{}".format(latlon))
 
         self.on_interaction(handle_interaction)
